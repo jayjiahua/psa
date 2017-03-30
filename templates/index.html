@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<title>新闻舆情分析平台</title>
+		<meta name="description" content="Graduation project of Jiahua Wu">
+		<meta name="author" content="Jiahua Wu">
+
+		<!-- Mobile Meta -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="{{ STATIC_URL }}images/favicon.ico">
+
+		<!-- Web Fonts -->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700,300&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Raleway:700,400,300' rel='stylesheet' type='text/css'>
+
+		<!-- Bootstrap core CSS -->
+		<link href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet">
+
+		<!-- Font Awesome CSS -->
+		<link href="{{ STATIC_URL }}fonts/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+		<!-- Plugins -->
+		<link href="{{ STATIC_URL }}css/animations.css" rel="stylesheet">
+
+		<!-- Worthy core CSS file -->
+		<link href="{{ STATIC_URL }}css/style.css" rel="stylesheet">
+
+		<!-- Custom css -->
+		<link href="{{ STATIC_URL }}css/custom.css" rel="stylesheet">
+	</head>
+
+	<body class="no-trans">
+		<!-- scrollToTop -->
+		<!-- ================ -->
+		<div class="scrollToTop"><i class="icon-up-open-big"></i></div>
+
+		<!-- header start -->
+		<!-- ================ -->
+		<header class="header fixed clearfix navbar navbar-fixed-top">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-4">
+
+						<!-- header-left start -->
+						<!-- ================ -->
+						<div class="header-left clearfix">
+
+							<!-- logo -->
+							<div class="logo smooth-scroll">
+								<a href="#banner"><img id="logo" src="{{ STATIC_URL }}images/logo.png" alt="Worthy"></a>
+							</div>
+
+							<!-- name-and-slogan -->
+							<div class="site-name-and-slogan smooth-scroll">
+								<div class="site-name"><a href="#banner">新闻舆情分析平台</a></div>
+								<!-- <div class="site-slogan">Free Bootstrap Theme by <a target="_blank" href="http://htmlcoder.me">HtmlCoder</a></div> -->
+								<div class="site-slogan">比别人更便捷地通晓天下事</div>
+							</div>
+
+						</div>
+						<!-- header-left end -->
+
+					</div>
+					<div class="col-md-8">
+
+						<!-- header-right start -->
+						<!-- ================ -->
+						<div class="header-right clearfix">
+
+							<!-- main-navigation start -->
+							<!-- ================ -->
+							<div class="main-navigation animated">
+
+								<!-- navbar start -->
+								<!-- ================ -->
+								<nav class="navbar navbar-default" role="navigation">
+									<div class="container-fluid">
+
+										<!-- Toggle get grouped for better mobile display -->
+										<div class="navbar-header">
+											<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+												<span class="sr-only">Toggle navigation</span>
+												<span class="icon-bar"></span>
+												<span class="icon-bar"></span>
+												<span class="icon-bar"></span>
+											</button>
+										</div>
+
+										<!-- Collect the nav links, forms, and other content for toggling -->
+										<div class="collapse navbar-collapse scrollspy smooth-scroll" id="navbar-collapse-1">
+											<ul class="nav navbar-nav navbar-right">
+												<li class="active"><a href="#banner">搜索</a></li>
+												<li><a href="#news-list">看看新闻</a></li>
+												<li><a href="#quota-today">今日舆情</a></li>
+												<li><a href="#subscribe">邮件订阅</a></li>
+											</ul>
+										</div>
+
+									</div>
+								</nav>
+								<!-- navbar end -->
+
+							</div>
+							<!-- main-navigation end -->
+
+						</div>
+						<!-- header-right end -->
+
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- header end -->
+
+		<!-- banner start -->
+		<!-- ================ -->
+		<div id="banner" class="banner">
+			<div class="banner-image"></div>
+			<div class="banner-caption">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2 object-non-visible" data-animation-effect="fadeIn">
+							<h1 class="text-center">寻找您<span>感兴趣</span>的新闻</h1>
+							<br>
+							<div class="col-md-6 col-md-offset-3">
+								<div class="form-group has-feedback">
+									<label class="sr-only" for="search">搜索</label>
+									<input type="text" class="form-control" id="search" placeholder="请输入关键字" name="search">
+									<i class="fa fa-search form-control-feedback"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- banner end -->
+
+		<!-- section start -->
+		<!-- ================ -->
+		<div class="section clearfix object-non-visible" data-animation-effect="fadeIn">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h1 id="news-list" class="title text-center">看<span>看</span>新闻</h1>
+						<p class="lead text-center">随便看看，总会有所收获的。</p>
+						<div class="space"></div>
+						{% for channel, news_list in news_group_by_channel.iteritems %}
+							{% if not forloop.counter|divisibleby:2 %}
+							<div class="row">
+							{% endif %}
+							<div class="col-md-6">
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="heading{{ forloop.counter }}">
+										<h4 class="panel-title">
+											<a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
+												{{ channel }}
+											</a>
+										</h4>
+									</div>
+									<div id="collapse{{ forloop.counter }}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading{{ forloop.counter }}">
+										<div class="panel-body">
+											<ul class="news-list-ul">
+												{% for news in news_list %}
+													{% if forloop.counter <= 3 %}
+
+													<li class="news-item">
+															<p class="news-rank">{{ forloop.counter }}</p>
+															<img src="{{ news.img_url }}" alt="{{ news.title }}">
+															<h3 class="news-title"><a href="/news/{{ news.news_id }}/">{{ news.title }}</a></h3>
+															<div class="news-extra-info">
+																<span class="news-interaction_count">热度: {{ news.interaction_count }}</span>
+																<span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+																<span class="news-time">{{ news.publish_at|date:'Y-m-d H:i' }}</span>
+															</div>
+													</li>
+													{% else %}
+													<li class="news-item-small">
+														<p class="news-rank">{{ forloop.counter }}</p>
+														<h4 class="news-title"><a href="/news/{{ news.news_id }}/">{{ news.title }}</a></h4>
+														<div class="news-extra-info">
+															<span class="news-interaction_count">热度: {{ news.interaction_count }}</span>
+															<span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+															<span class="news-time">{{ news.publish_at|date:'Y-m-d H:i' }}</span>
+														</div>
+													</li>
+													{% endif %}
+												{% endfor %}
+											</ul>
+											<div class="text-center">
+												<a href="#">查看<strong>{{ channel }}</strong>栏目所有新闻 >>></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+							{% if forloop.counter|divisibleby:2 %}
+							</div>
+							{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- section end -->
+
+		<!-- section start -->
+		<!-- ================ -->
+		<div class="section translucent-bg bg-image-1 blue">
+			<div class="container object-non-visible" data-animation-effect="fadeIn">
+				<h1 id="quota-today"  class="text-center title">今日舆情</h1>
+				<div class="space"></div>
+				<div class="row">
+
+				</div>
+			</div>
+		</div>
+		<!-- section end -->
+
+
+		<!-- section start -->
+		<!-- ================ -->
+		<div class="section">
+			<div class="container">
+				<h1 class="text-center title" id="subscribe">邮件订阅</h1>
+				<div class="separator"></div>
+				<p class="lead text-center">无需费心，好新闻将自动送到您手中</p>
+				<br>
+				<div class="row">
+				</div>
+			</div>
+		</div>
+		<!-- section end -->
+
+		<!-- footer start -->
+		<!-- ================ -->
+		<footer id="footer">
+			<!-- .subfooter start -->
+			<!-- ================ -->
+			<div class="subfooter">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<p class="text-center">Copyright © 2017 by Jiahua Wu.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- .subfooter end -->
+		</footer>
+		<!-- footer end -->
+
+		<!-- JavaScript files placed at the end of the document so the pages load faster
+		================================================== -->
+		<!-- Jquery and Bootstap core js files -->
+		<script type="text/javascript" src="{{ STATIC_URL }}plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- Modernizr javascript -->
+		<script type="text/javascript" src="{{ STATIC_URL }}plugins/modernizr.js"></script>
+
+		<!-- Isotope javascript -->
+		<script type="text/javascript" src="{{ STATIC_URL }}plugins/isotope/isotope.pkgd.min.js"></script>
+
+		<!-- Backstretch javascript -->
+		<script type="text/javascript" src="{{ STATIC_URL }}plugins/jquery.backstretch.min.js"></script>
+
+		<!-- Appear javascript -->
+		<script type="text/javascript" src="{{ STATIC_URL }}plugins/jquery.appear.js"></script>
+
+		<!-- Initialization of Plugins -->
+		<script type="text/javascript" src="{{ STATIC_URL }}js/template.js"></script>
+
+		<!-- Custom Scripts -->
+		<script type="text/javascript" src="{{ STATIC_URL }}js/custom.js"></script>
+
+	</body>
+</html>

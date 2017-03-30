@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<title>新闻舆情分析平台</title>
+		<meta name="description" content="Graduation project of Jiahua Wu">
+		<meta name="author" content="Jiahua Wu">
+
+		<!-- Mobile Meta -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="{{ STATIC_URL }}images/favicon.ico">
+
+		<!-- Web Fonts -->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700,300&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Raleway:700,400,300' rel='stylesheet' type='text/css'>
+
+		<!-- Bootstrap core CSS -->
+		<link href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet">
+
+		<!-- Font Awesome CSS -->
+		<link href="{{ STATIC_URL }}fonts/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+		<!-- Plugins -->
+		<link href="{{ STATIC_URL }}css/animations.css" rel="stylesheet">
+
+		<!-- Worthy core CSS file -->
+		<link href="{{ STATIC_URL }}css/style.css" rel="stylesheet">
+
+		<!-- Custom css -->
+		<link href="{{ STATIC_URL }}css/custom.css" rel="stylesheet">
+
+        <style>
+            #summary, #word-count {
+                background-image: url(/static/images/banner.jpg);
+{#                background-attachment: fixed;#}
+            }
+        </style>
+	</head>
+
+	<body class="no-trans">
+		<!-- scrollToTop -->
+		<!-- ================ -->
+		<div class="scrollToTop"><i class="icon-up-open-big"></i></div>
+
+		<!-- header start -->
+		<!-- ================ -->
+		<header class="header fixed clearfix navbar navbar-fixed-top">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-4">
+
+						<!-- header-left start -->
+						<!-- ================ -->
+						<div class="header-left clearfix">
+
+							<!-- logo -->
+							<div class="logo smooth-scroll">
+								<a href="#banner"><img id="logo" src="{{ STATIC_URL }}images/logo.png" alt="Worthy"></a>
+							</div>
+
+							<!-- name-and-slogan -->
+							<div class="site-name-and-slogan smooth-scroll">
+								<div class="site-name"><a href="#banner">新闻舆情分析平台</a></div>
+								<!-- <div class="site-slogan">Free Bootstrap Theme by <a target="_blank" href="http://htmlcoder.me">HtmlCoder</a></div> -->
+								<div class="site-slogan">比别人更便捷地通晓天下事</div>
+							</div>
+
+						</div>
+						<!-- header-left end -->
+
+					</div>
+					<div class="col-md-8">
+
+						<!-- header-right start -->
+						<!-- ================ -->
+						<div class="header-right clearfix">
+
+							<!-- main-navigation start -->
+							<!-- ================ -->
+							<div class="main-navigation animated">
+
+								<!-- navbar start -->
+								<!-- ================ -->
+								<nav class="navbar navbar-default" role="navigation">
+									<div class="container-fluid">
+
+										<!-- Toggle get grouped for better mobile display -->
+										<div class="navbar-header">
+											<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+												<span class="sr-only">Toggle navigation</span>
+												<span class="icon-bar"></span>
+												<span class="icon-bar"></span>
+												<span class="icon-bar"></span>
+											</button>
+										</div>
+
+										<!-- Collect the nav links, forms, and other content for toggling -->
+										<div class="collapse navbar-collapse scrollspy smooth-scroll" id="navbar-collapse-1">
+											<ul class="nav navbar-nav navbar-right">
+                                                <li><a href="/">返回首页</a></li>
+												<li class="active"><a href="#summary">新闻总览</a></li>
+												<li><a href="#sentiment">情感分析</a></li>
+												<li><a href="#word-count">词频分析</a></li>
+												<li><a href="#area">地域分析</a></li>
+											</ul>
+										</div>
+
+									</div>
+								</nav>
+								<!-- navbar end -->
+
+							</div>
+							<!-- main-navigation end -->
+
+						</div>
+						<!-- header-right end -->
+
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- header end -->
+
+
+		<!-- section start -->
+		<!-- ================ -->
+		<div id="summary" class="section clearfix">
+			<div class="container">
+					<div class="row" style="margin: 50px 0;">
+						<div id="title-container" class="col-md-8 col-md-offset-2 object-non-visible"  data-animation-effect="fadeIn">
+                            <img src="{{ news.img_url }}" alt="{{ news.title }}">
+                            <h3>{{ news.title }}&nbsp;&nbsp;&nbsp;&nbsp;
+                                <small><a style="color: white;" target="_blank" href="{{ news.doc_url }}">[查看原新闻]</a></small>
+                            </h3>
+                            <p>栏目：{{ news.channel }}</p>
+                            <p>热度：{{ news.interaction_count }}</p>
+                            <p>标签：{% for label in news.label %} <span class="label label-info">{{ label }}</span> {% endfor %}</p>
+                            <p>发布时间：{{ news.publish_at|date:'Y-m-d H:i' }}</p>
+                            <p>关键词：{% for keyword in news.keywords %} <span class="label label-info">{{ keyword }}</span> {% endfor %}</p>
+                            <p>新闻摘要：{{ news.summary }}</p>
+                        </div>
+					</div>
+                    <div class="row" style="margin: 50px 0;">
+                        <div id="comment-container" class="col-md-8 col-md-offset-2 object-non-visible"  data-animation-effect="fadeIn">
+                            <h3>热门评论</h3>
+                            {% for comment in news.hottest_comments %}
+                                <div class="comment-item">
+                                    <span class="text-danger against-count">{{ comment.against_count }} <i class="fa fa-sort-desc" aria-hidden="true"></i></span>
+                                    <span class="text-success vote-count">{{ comment.vote_count }} <i class="fa fa-sort-asc" aria-hidden="true"></i></span>
+                                {% if comment.is_anonymous %}
+                                    <img onerror="this.src='{{ STATIC_URL }}images/client-2.png'" src="{{ comment.avatar }}" alt="匿名用户">
+                                    <p class="nickname">匿名用户 评论：</p>
+                                {% else %}
+                                    <img onerror="this.src='{{ STATIC_URL }}images/client-2.png'" src="{{ comment.avatar }}" alt="{{ comment.nickname }}">
+                                    <p class="nickname">{{ comment.nickname }} 评论：</p>
+                                {% endif %}
+                                    <p class="comment-content">{{ comment.content }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+		<!-- section end -->
+
+        <div id="sentiment" class="section clearfix" >
+			<div class="container" id="sentiment-canvas-container">
+                <div class="row">
+					<div class="col-md-12">
+						<h1 id="news-list" class="title text-center"><span>情感</span>分析</h1>
+						<div class="space"></div>
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-2">
+                                <canvas id="emotions-canvas"></canvas>
+                            </div>
+                            <div class="col-md-4">
+                                <canvas id="polarity-canvas"></canvas>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="word-count" class="section clearfix">
+			<div class="container" id="sentiment-canvas-container">
+                <div class="row">
+					<div class="col-md-12">
+						<h1 id="news-list" class="title text-center"><span>词频</span>分析</h1>
+						<div class="space"></div>
+                        <div class="row">
+                            <div id="word-count-canvas-container">
+                                <div id="word-count-canvas" style="height:400px;width: 400px;"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="area" class="section clearfix" >
+			<div class="container" id="sentiment-canvas-container">
+                <div class="row">
+					<div class="col-md-12">
+						<h1 id="news-list" class="title text-center"><span>地域</span>分析</h1>
+						<div class="space"></div>
+                        <div class="row">
+                            <div id="province-canvas" style="height:400px;"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+		<!-- section start -->
+		<!-- ================ -->
+		<div class="default-bg blue">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2">
+						<p style="margin: 5px 0;" class="text-center">数据更新时间：<strong id="update-time">正在获取...</strong></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- section end -->
+
+
+		<!-- footer start -->
+		<!-- ================ -->
+		<footer id="footer">
+			<!-- .subfooter start -->
+			<!-- ================ -->
+			<div class="subfooter">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<p class="text-center">Copyright © 2017 by Jiahua Wu.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- .subfooter end -->
+
+		</footer>
+		<!-- footer end -->
+
+        <script>
+            var newsID = "{{ news.news_id }}";
+        </script>
+
+		<!-- JavaScript files placed at the end of the document so the pages load faster
+		================================================== -->
+		<!-- Jquery and Bootstap core js files -->
+		<script type="text/javascript" src="{{ STATIC_URL }}plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- Modernizr javascript -->
+		<script type="text/javascript" src="{{ STATIC_URL }}plugins/modernizr.js"></script>
+
+		<!-- Isotope javascript -->
+		<script type="text/javascript" src="{{ STATIC_URL }}plugins/isotope/isotope.pkgd.min.js"></script>
+
+		<!-- Backstretch javascript -->
+		<script type="text/javascript" src="{{ STATIC_URL }}plugins/jquery.backstretch.min.js"></script>
+
+		<!-- Appear javascript -->
+		<script type="text/javascript" src="{{ STATIC_URL }}plugins/jquery.appear.js"></script>
+
+        <script type="text/javascript" src="{{ STATIC_URL }}chartjs/Chart.min.js"></script>
+
+        <script type="text/javascript" src="{{ STATIC_URL }}chartjs/Chart.bundle.min.js"></script>
+
+        <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+        <script type="text/javascript">
+            // 路径配置
+            require.config({
+                paths: {
+                    echarts: 'http://echarts.baidu.com/build/dist'
+                }
+            });
+
+        </script>
+
+{#        <script data-require-id="echarts/chart/wordCloud" src="http://echarts.baidu.com/build/dist/chart/wordCloud.js" async=""></script>#}
+
+        <!-- Initialization of Plugins -->
+		<script type="text/javascript" src="{{ STATIC_URL }}js/template.js"></script>
+
+		<!-- Custom Scripts -->
+		<script type="text/javascript" src="{{ STATIC_URL }}js/custom.js"></script>
+
+		<script type="text/javascript" src="{{ STATIC_URL }}js/news_detail.js"></script>
+
+	</body>
+</html>
