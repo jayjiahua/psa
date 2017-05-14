@@ -62,4 +62,29 @@ def news_analysis_data(request, news_id):
         ret_data = None
     return render_json(data=ret_data)
 
+def search_news(request):
+    keyword = request.GET.get("keyword", "")
+    # if not keyword:
+    #     return render_json(data=[])
+    # else:
+    news_list = News.objects.filter(title__contains=keyword).order_by("-publish_at")
+    return render_json(data=[news.json_data() for news in news_list])
 
+
+def news_time_data(request, news_id):
+    news = get_object_or_404(News, news_id=news_id)
+    result = {
+        "x": [],
+        "positive": [],
+        "neutral": [],
+        "negative": [],
+        "total": [],
+    }
+    for data in news.analysis_results.order_by("create_time").all():
+        result["total"].append(data.interaction_count)
+        result["x"].append(data.create_time)
+        result["positive"].append(data.sentiment_value["polarity"]["positive"])
+        result["neutral"].append(data.sentiment_value["polarity"]["neutral"]),
+        result["negative"].append(data.sentiment_value["polarity"]["negative"])
+
+    return render_json(data=result)

@@ -18,6 +18,7 @@ from news_spider.models import News, PROVINCES
 from nlpir.doc_extractor import DocExtractor
 from nlpir.sentiment_analysis import LJSentimentAnalysis
 from nlpir.nlpir_ictclas import NLPIR
+from nlpir.key_extract import KeyExtract
 
 # Create your models here.
 
@@ -193,6 +194,38 @@ class AnalysisTask(models.Model):
         self.province_statistics = province_statistics
         self.save()
 
+    def generate_word_count_and_keywords(self):
+        nlpir = NLPIR()
+        nlpir.open()
+
+        key_extract = KeyExtract()
+        key_extract.open()
+
+        comments = []
+
+        for comment in self.news.comments.all():
+            comments.append(comment.content)
+
+        content = u"\n".join(comments)
+
+        word_count_ranking = nlpir.segment_and_count(content)
+        keywords = key_extract.get_keywords(content, 100, True)
+
+        nlpir.close()
+        key_extract.close()
+
+        self.word_count = [{
+            "word": item[0],
+            "pos": item[1],
+            "count": item[2]
+        } for item in word_count_ranking]
+
+        self.keyword_statistics = [{
+            "keyword": item[0],
+            "rank": item[1]
+        } for item in keywords]
+
+        self.save()
 
     def generate_word_count_of_comments(self):
         nlpir = NLPIR()
@@ -243,31 +276,45 @@ class AnalysisTask(models.Model):
     #     self.comment_statistics = result
     #     self.save()
 
+    def generate_interaction_count(self):
+        interaction_count = 0
+        for comment in self.news.comments.all():
+            interaction_count += 1 + comment.vote_count + comment.against_count
+
+        self.interaction_count = interaction_count
+        self.save()
+
+        self.news.interaction_count = interaction_count
+        self.news.save()
+
     def execute_task(self):
         self.start_time = datetime.datetime.now()
-        self.state = self.AnalysisState.RUNNING
+        self.state = AnalysisState.RUNNING
         self.save()
 
         try:
-            self.generate_word_count_of_comments()
+            self.generate_word_count_and_keywords()
             self.generate_sentiment_value()
+            self.generate_interaction_count()
 
             self.end_time = datetime.datetime.now()
-            self.state = self.AnalysisState.SUCCESSFUL
+            self.state = AnalysisState.SUCCESSFUL
             self.save()
 
         except:
             self.end_time = datetime.datetime.now()
-            self.state = self.AnalysisState.FAILED
+            self.state = AnalysisState.FAILED
             self.ex_data = traceback.format_exc()
             self.save()
 
     def json_data(self):
         return {
             "province_statistics": self.province_statistics,
-            "word_count": self.word_count[:300],
+            "word_count": self.word_count[:100],
+            "keywords": self.keyword_statistics,
             "sentiment_value": self.sentiment_value,
             "create_time": time.mktime(self.create_time.timetuple()),
+            "interaction_count": self.interaction_count,
         }
 
     def __unicode__(self):

@@ -88,6 +88,42 @@ File Description: Place here your custom CSS styles
   color: #5f5f5f;
 }
 
+#search-input {
+    margin-bottom: 0;
+}
+
+#search-result-container {
+    max-height: 250px;
+    overflow: overlay;
+}
+
+#search-result-ul {
+    background: rgba(103, 103, 103, 0.4);
+    /* margin-top: -15px; */
+    padding-left: 0;
+    margin: 0;
+}
+
+#search-result-ul li {
+    list-style: none;
+    padding: 10px 20px;
+    border-bottom: 1px #525252 solid;
+}
+
+.search-li:hover {
+    background: rgba(103, 103, 103, 0.7);
+    cursor: pointer;
+}
+
+#search-result-ul li:last-child {
+    border-bottom: none;
+}
+
+
+.news-footer {
+    margin-top: 15px;
+}
+
 /* news_detail.html */
 #title-container, #comment-container {
   background: rgba(41, 50, 78, 0.4);
@@ -153,7 +189,17 @@ File Description: Place here your custom CSS styles
     color: white;
 }
 
-#word-count-canvas-container {
+#word-count-canvas-container, #keywords-canvas-container {
     margin: auto;
     display: table;
+}
+
+#word-cloud-container {
+    background: rgba(41, 50, 78, 0.6);
+    padding-top: 50px;
+}
+
+#time-canvas {
+    margin: auto;
+    margin-top: 50px;
 }

@@ -104,9 +104,10 @@
 											<ul class="nav navbar-nav navbar-right">
                                                 <li><a href="/">返回首页</a></li>
 												<li class="active"><a href="#summary">新闻总览</a></li>
-												<li><a href="#sentiment">情感分析</a></li>
-												<li><a href="#word-count">词频分析</a></li>
-												<li><a href="#area">地域分析</a></li>
+												<li><a href="#sentiment-title">情感分析</a></li>
+												<li><a href="#wordcount-title">词频分析</a></li>
+												<li><a href="#province-title">地域分析</a></li>
+												<li><a href="#similar-news-title">同类新闻</a></li>
 											</ul>
 										</div>
 
@@ -173,18 +174,21 @@
 			<div class="container" id="sentiment-canvas-container">
                 <div class="row">
 					<div class="col-md-12">
-						<h1 id="news-list" class="title text-center"><span>情感</span>分析</h1>
+						<h1 id="sentiment-title" class="title text-center"><span>情感</span>分析</h1>
 						<div class="space"></div>
                         <div class="row">
                             <div class="col-md-4 col-md-offset-2">
                                 <canvas id="emotions-canvas"></canvas>
                             </div>
                             <div class="col-md-4">
-                                <canvas id="polarity-canvas"></canvas>
+                                <div id="polarity-canvas" style="height:400px;width: 400px;"></div>
                             </div>
 
                         </div>
 
+                        <div class="row">
+                            <div id="time-canvas" style="width: 827px; height: 378px;"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -194,11 +198,18 @@
 			<div class="container" id="sentiment-canvas-container">
                 <div class="row">
 					<div class="col-md-12">
-						<h1 id="news-list" class="title text-center"><span>词频</span>分析</h1>
+						<h1 id="wordcount-title" class="title text-center"><span>词频</span>分析</h1>
 						<div class="space"></div>
-                        <div class="row">
-                            <div id="word-count-canvas-container">
-                                <div id="word-count-canvas" style="height:400px;width: 400px;"></div>
+                        <div class="row" id="word-cloud-container">
+                            <div class="col-md-6">
+                                <div id="word-count-canvas-container">
+                                    <div id="word-count-canvas" style="height:400px;width: 400px;"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="keywords-canvas-container">
+                                    <div id="keywords-canvas" style="height:400px;width: 400px;"></div>
+                                </div>
                             </div>
                         </div>
 
@@ -211,10 +222,39 @@
 			<div class="container" id="sentiment-canvas-container">
                 <div class="row">
 					<div class="col-md-12">
-						<h1 id="news-list" class="title text-center"><span>地域</span>分析</h1>
+						<h1 id="province-title" class="title text-center"><span>地域</span>分析</h1>
 						<div class="space"></div>
                         <div class="row">
                             <div id="province-canvas" style="height:400px;"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="similar-news" class="section clearfix" >
+			<div class="container" id="sentiment-canvas-container">
+                <div class="row">
+					<div class="col-md-12">
+						<h1 id="similar-news-title" class="title text-center"><span>同类</span>新闻</h1>
+						<div class="space"></div>
+                        <div class="row">
+                            <div class="col-md-6 col-md-offset-3">
+                                <ul class="news-list-ul">
+                                    {% for news in similar_news_list %}
+                                        <li class="news-item-small">
+                                            <p class="news-rank">{{ forloop.counter }}</p>
+                                            <h4 class="news-title"><a href="/news/{{ news.news_id }}/">{{ news.title }}</a></h4>
+                                            <div class="news-extra-info">
+                                                <span class="news-interaction_count">热度: {{ news.interaction_count }}</span>
+                                                <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                                                <span class="news-time">{{ news.publish_at|date:'Y-m-d H:i' }}</span>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </div>
 
                     </div>

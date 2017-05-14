@@ -99,13 +99,17 @@ class Channel(models.Model):
         raw_data = r.content[14:-1]
         json_data = json.loads(raw_data, encoding="gbk", strict=False)
         for item in json_data:
+            # print item
             if item["newstype"] == "article":
-                news = News.create_or_update_by_json(self, item)
-                if news:
-                    news.fetch_content()
-                    news.generate_summary()
-                    news.generate_keywords()
-                    print self.name, '-', news.title
+                try:
+                    news = News.create_or_update_by_json(self, item)
+                    if news:
+                        news.fetch_content()
+                        news.generate_summary()
+                        news.generate_keywords()
+                        print self.name, '-', news.title
+                except:
+                    continue
 
     def latest_news(self, limit=10):
         return self.news_set.all()[:limit]
@@ -149,7 +153,7 @@ class News(models.Model):
             "publish_at": self.publish_at,
             "channel": self.channel.name,
             "summary": self.summary,
-            "keywords": self.keywords.split(';'),
+            "keywords": self.keywords.split(';') if self.keywords else "",
         }
 
     def json_data_simple(self):
@@ -168,7 +172,8 @@ class News(models.Model):
         title = json_data["title"]
         doc_url = json_data["docurl"]
         img_url = json_data["imgurl"]
-        interaction_count = json_data["tienum"]
+        # interaction_count = json_data["tienum"]
+        interaction_count = 0  # 由评论计算
         label = json_data["label"]
         news_id = json_data["docurl"][json_data["docurl"].rfind("/")+1:-5]
 
@@ -231,7 +236,10 @@ class News(models.Model):
                     if create_time <= newest_time:
                         is_newest = True
                         break
-                NewsComment.create_by_json(self, item)
+                try:
+                    NewsComment.create_by_json(self, item)
+                except:
+                    continue
 
             if is_newest:
                 break

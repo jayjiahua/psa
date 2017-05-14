@@ -97,7 +97,7 @@
 											<ul class="nav navbar-nav navbar-right">
 												<li class="active"><a href="#banner">搜索</a></li>
 												<li><a href="#news-list">看看新闻</a></li>
-												<li><a href="#quota-today">今日舆情</a></li>
+{#												<li><a href="#quota-today">今日舆情</a></li>#}
 												<li><a href="#subscribe">邮件订阅</a></li>
 											</ul>
 										</div>
@@ -122,18 +122,25 @@
 		<!-- ================ -->
 		<div id="banner" class="banner">
 			<div class="banner-image"></div>
-			<div class="banner-caption">
+			<div class="banner-caption" style="top: 25%;">
 				<div class="container">
 					<div class="row">
 						<div class="col-md-8 col-md-offset-2 object-non-visible" data-animation-effect="fadeIn">
 							<h1 class="text-center">寻找您<span>感兴趣</span>的新闻</h1>
 							<br>
 							<div class="col-md-6 col-md-offset-3">
-								<div class="form-group has-feedback">
+								<div class="form-group has-feedback" id="search-input">
 									<label class="sr-only" for="search">搜索</label>
 									<input type="text" class="form-control" id="search" placeholder="请输入关键字" name="search">
-									<i class="fa fa-search form-control-feedback"></i>
+                                    <i class="fa fa-search form-control-feedback"></i>
 								</div>
+                                <div id="search-result-container" style="display: none;">
+                                    <ul id="search-result-ul">
+                                    {% for channel, news_list in news_group_by_channel.iteritems %}
+                                        <li>{{ channel }}</li>
+                                    {% endfor %}
+                                    </ul>
+                                </div>
 							</div>
 						</div>
 					</div>
@@ -193,9 +200,34 @@
 													{% endif %}
 												{% endfor %}
 											</ul>
-											<div class="text-center">
-												<a href="#">查看<strong>{{ channel }}</strong>栏目所有新闻 >>></a>
-											</div>
+                                        <div class="news-footer">
+                                            <select class="form-control" id="channel-select" style="float: left;width: 100px;margin-left: 10px;height: 35px;">
+                                                <option>按热度</option>
+                                                <option>按时间</option>
+                                            </select>
+{#											<div class="text-center">#}
+{#												<a href="#">查看<strong>{{ channel }}</strong>栏目所有新闻 >>></a>#}
+{#											</div>#}
+                                            <nav aria-label="Page navigation" style="float: right;">
+                                              <ul class="pagination" style="margin: 0;">
+                                                <li>
+                                                  <a href="#" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                  </a>
+                                                </li>
+                                                <li class="active"><a href="#">1</a></li>
+                                                <li><a href="#">2</a></li>
+                                                <li><a href="#">3</a></li>
+                                                <li><a href="#">4</a></li>
+                                                <li><a href="#">5</a></li>
+                                                <li>
+                                                  <a href="#" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                  </a>
+                                                </li>
+                                              </ul>
+                                            </nav>
+                                            </div>
 										</div>
 									</div>
 								</div>
@@ -214,12 +246,34 @@
 
 		<!-- section start -->
 		<!-- ================ -->
-		<div class="section translucent-bg bg-image-1 blue">
+		<div class="section translucent-bg bg-image-1 blue" style="min-height: 100%">
 			<div class="container object-non-visible" data-animation-effect="fadeIn">
-				<h1 id="quota-today"  class="text-center title">今日舆情</h1>
-				<div class="space"></div>
-				<div class="row">
+				<h1 id="subscribe"  class="text-center title"><span>邮件</span>订阅</h1>
+                <div class="separator"></div>
 
+                <p class="lead text-center">无需费心，好新闻将自动送到您手中</p>
+
+				<div class="space"></div>
+            	<div class="space"></div>
+				<div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <label class="sr-only" for="channel-select">订阅</label>
+                        <select name="channel" class="form-control" id="channel-select" style="float: left;width: 17%;">
+                            {% for channel, news_list in news_group_by_channel.iteritems %}
+                                <option value="{{ channel }}">{{ channel }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <div class="form-group" style="float: left;width: 60%; margin: 0 2%;">
+
+
+                            <label class="sr-only" for="email">订阅</label>
+                            <input type="email" class="form-control" id="email" placeholder="请输入邮箱地址" name="email">
+                            <i class="fa fa-envelope-open-o form-control-feedback"></i>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" style="height: 45px;width: 19%;float: left;min-width: 0;">订阅</button>
+                    </div>
 				</div>
 			</div>
 		</div>
@@ -228,16 +282,16 @@
 
 		<!-- section start -->
 		<!-- ================ -->
-		<div class="section">
-			<div class="container">
-				<h1 class="text-center title" id="subscribe">邮件订阅</h1>
-				<div class="separator"></div>
-				<p class="lead text-center">无需费心，好新闻将自动送到您手中</p>
-				<br>
-				<div class="row">
-				</div>
-			</div>
-		</div>
+{#		<div class="section">#}
+{#			<div class="container">#}
+{#				<h1 class="text-center title" id="subscribe">邮件订阅</h1>#}
+{#				<div class="separator"></div>#}
+{#				<p class="lead text-center">无需费心，好新闻将自动送到您手中</p>#}
+{#				<br>#}
+{#				<div class="row">#}
+{#				</div>#}
+{#			</div>#}
+{#		</div>#}
 		<!-- section end -->
 
 		<!-- footer start -->
@@ -281,6 +335,7 @@
 
 		<!-- Custom Scripts -->
 		<script type="text/javascript" src="{{ STATIC_URL }}js/custom.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}js/index.js"></script>
 
 	</body>
 </html>

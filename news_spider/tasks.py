@@ -21,7 +21,7 @@ def fetch_news():
 
 @task
 def fetch_comments():
-    yesterday = timezone.now() - datetime.timedelta(days=1)
+    yesterday = timezone.now() - datetime.timedelta(days=2)
     news_list = News.objects.filter(publish_at__gt=yesterday).all()
     # news_list = News.objects.all()[:100]
     # news_list = News.objects.filter(news_id="C7J9D7CK002580SL")
